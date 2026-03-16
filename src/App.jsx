@@ -8,6 +8,7 @@ import NotesPage from './pages/NotesPage'
 import AboutPage from './pages/AboutPage'
 import BookmarksPage from './pages/BookmarksPage'
 import AppHeader from './components/AppHeader'
+import AdMobBanner from './components/AdMobBanner'
 import { useLocalStorage } from './hooks/useLocalStorage'
 
 const App = () => {
@@ -31,6 +32,7 @@ const App = () => {
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </main>
+      <AdMobBanner />
       <BottomNav />
     </div>
   )
