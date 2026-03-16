@@ -18,6 +18,7 @@ const quickLinks = [
   { label: 'Reference Library', to: '/references' },
   { label: 'Atlas Disease Site', to: '/references#atlas' },
   { label: 'Personal Notes', to: '/notes' },
+  { label: 'Pasien & Masyarakat', to: '/pasien' },
   { label: 'Bookmarks', to: '/bookmarks' },
   { label: 'About & Disclaimer', to: '/about' },
 ]
