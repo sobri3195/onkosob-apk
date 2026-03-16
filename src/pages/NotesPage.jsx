@@ -11,6 +11,8 @@ import { STORAGE_KEYS } from '../utils/storageKeys'
 const NotesPage = () => {
   const [notes, setNotes] = useLocalStorage(STORAGE_KEYS.notes, [])
   const [draft, setDraft] = useState({ id: null, title: '', tag: '', body: '' })
+  const [search, setSearch] = useState('')
+  const [sortType, setSortType] = useState('latest')
   const { toggleBookmark, isBookmarked } = useBookmarks()
   const { addRecent } = useRecentActivity()
 
@@ -29,7 +31,14 @@ const NotesPage = () => {
     setDraft({ id: null, title: '', tag: '', body: '' })
   }
 
-  const sortedNotes = useMemo(() => [...notes].sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt)), [notes])
+  const sortedNotes = useMemo(() => {
+    const filtered = notes.filter((item) => `${item.title} ${item.tag} ${item.body}`.toLowerCase().includes(search.toLowerCase()))
+    return [...filtered].sort((a, b) => {
+      if (sortType === 'latest') return new Date(b.updatedAt) - new Date(a.updatedAt)
+      if (sortType === 'oldest') return new Date(a.updatedAt) - new Date(b.updatedAt)
+      return a.title.localeCompare(b.title)
+    })
+  }, [notes, search, sortType])
 
   return (
     <div className="page">
@@ -39,6 +48,7 @@ const NotesPage = () => {
         <label>Title<input className="input" value={draft.title} onChange={(e) => setDraft({ ...draft, title: e.target.value })} /></label>
         <label>Tag<input className="input" value={draft.tag} onChange={(e) => setDraft({ ...draft, tag: e.target.value })} placeholder="mis. Prostate, BED, OAR" /></label>
         <label>Body<textarea className="input textarea" value={draft.body} onChange={(e) => setDraft({ ...draft, body: e.target.value })} /></label>
+        <p className="hint">Karakter: {draft.body.length}</p>
         <div className="chip-row">
           {noteTemplates.map((template) => (
             <button key={template.id} type="button" className="chip" onClick={() => setDraft({ ...draft, body: template.body })}>{template.name}</button>
@@ -47,6 +57,15 @@ const NotesPage = () => {
         <div className="action-row">
           <button className="btn" onClick={saveNote}>{isEditing ? 'Update note' : 'Save note'}</button>
           <button className="btn btn--ghost" onClick={() => setDraft({ id: null, title: '', tag: '', body: '' })}>Reset</button>
+        </div>
+      </Card>
+
+      <Card title="Filter Notes">
+        <input className="input" placeholder="Cari judul, tag, atau isi note..." value={search} onChange={(e) => setSearch(e.target.value)} />
+        <div className="chip-row">
+          <button type="button" className={`chip ${sortType === 'latest' ? 'chip--active' : ''}`} onClick={() => setSortType('latest')}>Terbaru</button>
+          <button type="button" className={`chip ${sortType === 'oldest' ? 'chip--active' : ''}`} onClick={() => setSortType('oldest')}>Terlama</button>
+          <button type="button" className={`chip ${sortType === 'title' ? 'chip--active' : ''}`} onClick={() => setSortType('title')}>A-Z</button>
         </div>
       </Card>
 

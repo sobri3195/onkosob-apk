@@ -7,6 +7,12 @@ import { useBookmarks, useCalculatorHistory, useRecentActivity } from '../hooks/
 
 const baseForm = { totalDose: 60, fractions: 30, alphaBeta: 10 }
 
+const regimens = [
+  { name: 'Konvensional', totalDose: 60, fractions: 30 },
+  { name: 'Hipofraksinasi', totalDose: 55, fractions: 20 },
+  { name: 'SBRT', totalDose: 50, fractions: 5 },
+]
+
 const CalculatorsPage = () => {
   const [form, setForm] = useState(baseForm)
   const [helper, setHelper] = useState({ knownDose: 50, knownFraction: 25, targetFraction: 20 })
@@ -23,9 +29,23 @@ const CalculatorsPage = () => {
     addRecent('Saved calculator history', `${type}: ${value.toFixed(2)}`)
   }
 
+  const copySummary = async () => {
+    const text = `BED ${bed.toFixed(2)} Gy | EQD2 ${eqd2.toFixed(2)} Gy | Dose/Fraction ${helperResult.toFixed(2)} Gy`
+    await navigator.clipboard.writeText(text)
+    addRecent('Copied calculation summary', text)
+  }
+
   return (
     <div className="page">
       <SectionHeader title="Calculators" subtitle="Untuk pembelajaran radiobiologi dan estimasi konsep dosis/fraksi." />
+
+      <Card title="Preset Regimen" subtitle="Isi form otomatis sesuai pola umum pembelajaran">
+        <div className="chip-row">
+          {regimens.map((item) => (
+            <button key={item.name} type="button" className="chip" onClick={() => setForm((prev) => ({ ...prev, ...item }))}>{item.name}</button>
+          ))}
+        </div>
+      </Card>
 
       <Card title="BED Calculator" subtitle="Biologically Effective Dose">
         <div className="form-grid">
@@ -49,6 +69,7 @@ const CalculatorsPage = () => {
         <p className="hint">Interpretasi edukatif: EQD2 memudahkan perbandingan skema fraksinasi berbeda.</p>
         <div className="action-row">
           <button className="btn" onClick={() => saveCalc('EQD2', eqd2)}>Simpan history</button>
+          <button className="btn btn--ghost" onClick={copySummary}>Copy ringkasan</button>
           <BookmarkButton
             isBookmarked={isBookmarked({ id: 'eqd2-calculator', type: 'calculator' })}
             onClick={() => toggleBookmark({ id: 'eqd2-calculator', type: 'calculator', title: 'EQD2 Calculator' })}
@@ -65,6 +86,7 @@ const CalculatorsPage = () => {
         <p className="result">Estimasi total dose: <strong>{helperResult.toFixed(2)} Gy</strong></p>
         <div className="action-row">
           <button className="btn" onClick={() => saveCalc('Dose/Fraction', helperResult)}>Simpan history</button>
+          <button className="btn btn--ghost" onClick={() => setHelper({ knownDose: 50, knownFraction: 25, targetFraction: 20 })}>Reset helper</button>
           <BookmarkButton
             isBookmarked={isBookmarked({ id: 'dose-fraction-helper', type: 'calculator' })}
             onClick={() => toggleBookmark({ id: 'dose-fraction-helper', type: 'calculator', title: 'Dose/Fraction Helper' })}
