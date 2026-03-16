@@ -7,6 +7,7 @@ import ReferencesPage from './pages/ReferencesPage'
 import NotesPage from './pages/NotesPage'
 import AboutPage from './pages/AboutPage'
 import BookmarksPage from './pages/BookmarksPage'
+import PatientCommunityPage from './pages/PatientCommunityPage'
 import AppHeader from './components/AppHeader'
 import { useLocalStorage } from './hooks/useLocalStorage'
 
@@ -26,6 +27,7 @@ const App = () => {
           <Route path="/calculators" element={<CalculatorsPage />} />
           <Route path="/references" element={<ReferencesPage />} />
           <Route path="/notes" element={<NotesPage />} />
+          <Route path="/pasien" element={<PatientCommunityPage />} />
           <Route path="/about" element={<AboutPage />} />
           <Route path="/bookmarks" element={<BookmarksPage />} />
           <Route path="*" element={<Navigate to="/" replace />} />
