@@ -30,3 +30,13 @@ npm run preview
 
 ## Deploy ke Vercel
 Project ini siap deploy sebagai static Vite app (framework preset: **Vite**).
+
+## AdMob banner
+Aktifkan banner iklan dengan menambahkan environment variable berikut (mis. di `.env`):
+
+```bash
+VITE_ADMOB_CLIENT_ID=ca-pub-xxxxxxxxxxxxxxxx
+VITE_ADMOB_BANNER_SLOT_ID=1234567890
+```
+
+Jika variable belum diisi, komponen iklan tidak akan dirender.
