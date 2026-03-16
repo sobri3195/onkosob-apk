@@ -89,3 +89,21 @@ a { color: #2563eb; text-decoration: none; }
   .shortcut-grid { grid-template-columns: repeat(3, 1fr); }
   .stats-grid { grid-template-columns: repeat(4, 1fr); }
 }
+
+.admob-banner {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 3.8rem;
+  max-width: 768px;
+  margin: 0 auto;
+  padding: 0 .5rem;
+  z-index: 20;
+}
+
+.admob-banner .adsbygoogle {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+}
