@@ -3,4 +3,5 @@ export const STORAGE_KEYS = {
   calcHistory: 'onkosob_calc_history',
   notes: 'onkosob_notes',
   recent: 'onkosob_recent_activity',
+  studyGoals: 'onkosob_study_goals',
 }
